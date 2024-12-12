@@ -11,7 +11,7 @@ app.use(express.json());
 const allowedOrigins = [
   "https://goat-stock-management.vercel.app",
   "http://localhost:5173",
-  "https://goat-stock-management-xi.vercel.app",
+  "https://goat-stock-management-mu.vercel.app",
 ];
 
 const corsOptions = {
