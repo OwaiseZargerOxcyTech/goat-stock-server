@@ -1,46 +1,109 @@
 const prisma = require("../lib/prisma");
 
-exports.getAllTrades = async (req, res) => {
+exports.getAllTradeStock = async (req, res) => {
   try {
-    const trades = await prisma.trade.findMany();
-    res.json(trades);
+    const tradeStocks = await prisma.tradeStock.findMany();
+    res.json(tradeStocks);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching trades" });
+    res.status(500).json({ error: "Error fetching trade stock" });
   }
 };
 
-exports.createTrade = async (req, res) => {
+exports.createTradeStock = async (req, res) => {
   try {
-    const newTrade = await prisma.trade.create({
-      data: req.body,
+    const {
+      goatName,
+      purchaserInformation,
+      customerDetails,
+      weight,
+      height,
+      entryDate,
+      exitDate,
+      salesStatus,
+      maintenanceRecords,
+      price,
+      description,
+      uniqueIdentificationNumber,
+    } = req.body;
+
+    const newTradeStock = await prisma.tradeStock.create({
+      data: {
+        goatName,
+        purchaserInformation,
+        customerDetails,
+        weight,
+        height,
+        entryDate: entryDate ? new Date(entryDate) : null, // Convert to Date object
+        exitDate: exitDate ? new Date(exitDate) : null, // Convert to Date object
+        salesStatus,
+        maintenanceRecords,
+        price,
+        description,
+        uniqueIdentificationNumber,
+      },
     });
-    res.status(201).json(newTrade);
+    res.status(201).json(newTradeStock);
   } catch (error) {
-    res.status(400).json({ error: "Error creating trade" });
+    console.error("Error creating trade stock:", error);
+    res
+      .status(400)
+      .json({ error: "Error creating trade stock", message: error.message });
   }
 };
 
-exports.updateTrade = async (req, res) => {
+exports.updateTradeStock = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedTrade = await prisma.trade.update({
+    const {
+      goatName,
+      purchaserInformation,
+      customerDetails,
+      weight,
+      height,
+      entryDate,
+      exitDate,
+      salesStatus,
+      maintenanceRecords,
+      price,
+      description,
+      uniqueIdentificationNumber,
+    } = req.body;
+
+    const updatedTradeStock = await prisma.tradeStock.update({
       where: { id: parseInt(id) },
-      data: req.body,
+      data: {
+        goatName,
+        purchaserInformation,
+        customerDetails,
+        weight,
+        height,
+        entryDate: entryDate ? new Date(entryDate) : null, // Convert to Date object
+        exitDate: exitDate ? new Date(exitDate) : null, // Convert to Date object
+        salesStatus,
+        maintenanceRecords,
+        price,
+        description,
+        uniqueIdentificationNumber,
+      },
     });
-    res.json(updatedTrade);
+    res.json(updatedTradeStock);
   } catch (error) {
-    res.status(400).json({ error: "Error updating trade" });
+    console.error("Error updating trade stock:", error);
+    res
+      .status(400)
+      .json({ error: "Error updating trade stock", message: error.message });
   }
 };
 
-exports.deleteTrade = async (req, res) => {
+exports.deleteTradeStock = async (req, res) => {
   try {
     const { id } = req.params;
-    await prisma.trade.delete({
+    await prisma.tradeStock.delete({
       where: { id: parseInt(id) },
     });
-    res.json({ message: "Trade deleted successfully" });
+    res.json({ message: "Trade stock deleted successfully" });
   } catch (error) {
-    res.status(400).json({ error: "Error deleting trade" });
+    console.error("Error deleting trade stock:", error);
+    res.status(400).json({ error: "Error deleting trade stock" });
   }
 };

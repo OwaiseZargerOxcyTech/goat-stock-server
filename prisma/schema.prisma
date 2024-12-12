@@ -52,14 +52,22 @@ model FemaleStock {
   updatedAt             DateTime @updatedAt
 }
 
-model Trade {
-  id                Int      @id @default(autoincrement())
-  goatName          String
-  intendedUse       String
-  price             Float
-  transactionDetails String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model TradeStock {
+  id                      Int      @id @default(autoincrement())
+  goatName                String
+  purchaserInformation    String
+  customerDetails         String
+  weight                  Float
+  height                  Float
+  entryDate               DateTime
+  exitDate                DateTime?
+  salesStatus             String
+  maintenanceRecords      String?
+  price                   Float
+  description             String?
+  uniqueIdentificationNumber String @unique
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 model Admin {
