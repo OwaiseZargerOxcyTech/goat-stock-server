@@ -1,4 +1,11 @@
 const prisma = require("../lib/prisma");
+const fs = require("fs");
+const { put, del } = require("@vercel/blob");
+const parseForm = require("../utils/parseForm");
+
+async function deleteBlogImage(blogImageUrl) {
+  await del(blogImageUrl); // Ensure del function is implemented
+}
 
 exports.getAllTradeStock = async (req, res) => {
   try {
@@ -233,6 +240,13 @@ exports.updateTradeStock = async (req, res) => {
 exports.deleteTradeStock = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const tradeStock2 = await prisma.tradeStock.findFirst({
+      where: { id: parseInt(id) },
+    });
+
+    await deleteBlogImage(tradeStock2.photographUrl);
+
     await prisma.tradeStock.delete({
       where: { id: parseInt(id) },
     });
